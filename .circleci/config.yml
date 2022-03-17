@@ -8,13 +8,13 @@ workflows:
   build_test_deploy:
     jobs:
       - build_test
-      - deploy:
+      - deploy_docker:
           requires:
             - build_test
-          filters:
-            branches:
-              only:
-                - main
+          #filters:
+            #branches:
+              #only:
+                #- main
 
 
 jobs:
@@ -40,16 +40,22 @@ jobs:
             flake8
             pytest
 
-  deploy:
+  deploy_docker:
     docker:
       - image: circleci/python:3.8.4
 
     steps:
+      - setup_remote_docker
       - checkout
-      - run: docker build .
-      - heroku/install
-      - run: heroku container:login
-      - heroku/push-docker-image:
-          process-types: web
-      - heroku/release-docker-image:
-          process-types: web
+      - docker/check
+      - docker/build:
+          image: $DOCKER_LOGIN/oc-lettings
+          extra_build_args: "-t $DOCKER_LOGIN/oc-lettings"
+          tag: $CIRCLE_SHA1
+      - docker/push:
+          image: $DOCKER_LOGIN/oc-lettings
+          tag: "latest"
+      - docker/push:
+          image: $DOCKER_LOGIN/oc-lettings
+          tag: $CIRCLE_SHA1
+      - checkout
