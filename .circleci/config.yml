@@ -1,4 +1,8 @@
-version: 2
+version: 2.1
+
+orbs: 
+  heroku: circleci/heroku@1.2.6
+  docker: circleci/docker@2.0.1
 
 workflows:
   build_test_deploy:
