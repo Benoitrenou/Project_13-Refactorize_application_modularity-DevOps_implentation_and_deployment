@@ -1,0 +1,46 @@
+version: 2
+
+workflows:
+  build_test_deploy:
+    jobs:
+      - build_test
+      - deploy:
+          requires:
+            - build_test
+
+
+jobs:
+  build_test:
+    docker:
+      - image: circleci/python:3.8.4
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            cd Python-OC-Lettings-FR
+            pip install -r requirements.txt
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            flake8 --exclude=venv* --statistics
+            pytest -v --cov=calculator
+
+  deploy:
+    docker:
+      - image: circleci/python:3.8.4
+
+    steps:
+      - checkout
+      - run: docker build .
+      - heroku/install
+      - run: heroku container:login
+      - heroku/push-docker-image:
+          process-types: web
+      - heroku/release-docker-image:
+          process-types: web
