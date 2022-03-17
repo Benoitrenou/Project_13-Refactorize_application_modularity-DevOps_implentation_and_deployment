@@ -32,6 +32,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
+            cd Python-OC-Lettings-FR
             flake8
             pytest
 
