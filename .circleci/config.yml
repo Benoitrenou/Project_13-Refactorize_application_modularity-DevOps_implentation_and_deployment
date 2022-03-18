@@ -15,6 +15,13 @@ workflows:
             #branches:
               #only:
                 #- main
+      - deploy_heroku:
+          requires:
+            - deploy_docker
+          #filters:
+            #branches:
+              #only:
+                #- main
 
 
 jobs:
@@ -59,3 +66,18 @@ jobs:
           image: $DOCKER_LOGIN/oc-lettings
           tag: $CIRCLE_SHA1
       - checkout
+
+  deploy_heroku:
+    steps:
+      - checkout
+      - run:
+          name: Build and push image to Heroku
+          command: |
+            heroku/install
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku config:set PORT=8000 -a oc-lettings2022
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku config:set SECRET_KEY=${SECRET_KEY} -a oc-lettings2022
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a oc-lettings2022 web
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a oc-lettings2022 web
+
+    
