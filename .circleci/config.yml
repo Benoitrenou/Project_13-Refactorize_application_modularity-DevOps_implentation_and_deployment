@@ -71,10 +71,10 @@ jobs:
     machine: True
     steps:
       - checkout
+      - heroku/install
       - run:
           name: Build and push image to Heroku
           command: |
-            heroku/install
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku config:set PORT=8000 -a oc-lettings2022
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku config:set SECRET_KEY=${SECRET_KEY} -a oc-lettings2022
