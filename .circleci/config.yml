@@ -37,45 +37,37 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            cd Python-OC-Lettings-FR
             pip install -r requirements.txt
       - run:
           name: run tests
           command: |
             . venv/bin/activate
-            cd Python-OC-Lettings-FR
             flake8
             pytest
 
   deploy_docker:
     docker:
       - image: circleci/python:3.8.4
-
+    
     steps:
+      - checkout
       - setup_remote_docker
-      - checkout
-      - docker/check
-      - docker/build:
-          image: $DOCKER_LOGIN/oc-lettings
-          extra_build_args: "-t $DOCKER_LOGIN/oc-lettings"
-          tag: $CIRCLE_SHA1
-      - docker/push:
-          image: $DOCKER_LOGIN/oc-lettings
-          tag: "latest"
-      - docker/push:
-          image: $DOCKER_LOGIN/oc-lettings
-          tag: $CIRCLE_SHA1
-      - checkout
+      - run:
+          name: build docker image
+          command: |
+            echo "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            docker build -t "$CIRCLE_SHA1" .
+            docker tag "$CIRCLE_SHA1" "$DOCKERHUB_USERNAME"/oc_lettings:"$CIRCLE_SHA1"
+            docker push "$DOCKERHUB_USERNAME"/oc_lettings:"$CIRCLE_SHA1"
 
   deploy_heroku:
-    machine: True
+    machine: true
     steps:
       - checkout
-      - heroku/install
       - run:
-          name: Build and push image to Heroku
+          name: Build app and send Docker IMG to Heroku
           command: |
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
-            HEROKU_API_KEY=${HEROKU_TOKEN} heroku config:set PORT=8000 -a oc-lettings2022
-            HEROKU_API_KEY=${HEROKU_TOKEN} heroku config:set SECRET_KEY=${SECRET_KEY} -a oc-lettings2022
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a oc-lettings2022 web
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a oc-lettings2022 web

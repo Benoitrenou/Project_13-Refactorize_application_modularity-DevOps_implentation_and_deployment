@@ -2,11 +2,14 @@ FROM python:3.8
 
 WORKDIR /app
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-ENV PORT 8000
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PORT=8000
+ENV DEBUG=True
 
-COPY ./Python-OC-Lettings-FR/requirements.txt /app/requirements.txt
+ADD . /app
+
+COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
