@@ -32,3 +32,7 @@ def letting(request, letting_id):
         'address': letting.address,
     }
     return render(request, 'letting.html', context)
+
+
+def trigger_error(request):
+    1 / 0
