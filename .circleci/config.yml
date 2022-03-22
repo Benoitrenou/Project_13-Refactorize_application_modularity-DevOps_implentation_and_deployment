@@ -11,17 +11,17 @@ workflows:
       - deploy_docker:
           requires:
             - build_test
-          #filters:
-            #branches:
-              #only:
-                #- main
+          filters:
+            branches:
+              only:
+                - main
       - deploy_heroku:
           requires:
             - deploy_docker
-          #filters:
-            #branches:
-              #only:
-                #- main
+          filters:
+            branches:
+              only:
+                - main
 
 
 jobs:
