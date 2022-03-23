@@ -19,24 +19,24 @@ Pour créer un environnement virtuel, depuis votre terminal de commande, effectu
 ### Sous Linux/ MAC OS
 
     $ python -m venv <environment_name>
-    exemple : python -m venv venvAPI
+    exemple : python -m venv venv
     
 ### Sous Windows:
     
     $ virtualenv <environment_name>
-    exemple : virtualenv venvAPI 
+    exemple : virtualenv venv 
     
 ## Activation de l'environnement virtuel 
 
 ### Sous Linux / MAC OS:
 
     $ source <environment_name>/bin/activate
-    exemple : source venvAPI/bin/activate
+    exemple : source venv/bin/activate
    
 ### Sous Windows:
 
     $ source <environment_name>/Scripts/activate
-    exemple : source venvAPI/Scripts/activate
+    exemple : source venv/Scripts/activate
     
 ## Installation des packages : 
 
@@ -46,7 +46,7 @@ Afin que les packages nécessaires au fonctionnement de l'application soient ins
 
 ## Lancement de l'application
 
-Enfin pour lancer l'API, dans le terminal depuis le répertoire du projet :
+Enfin pour lancer l'application, dans le terminal depuis le répertoire du projet :
 
     $ python manage.py runserver
     
@@ -54,7 +54,7 @@ Le site sera ensuite disponible à l'adresse suivante : http://localhost:8000/
 
 ## Lancer les tests et linting
 
-Pour générer un rapport Flake8 dans le terminal, placez vous dans le dossier racine du projet et utilisez la commande :
+Pour générer un rapport Flake8, placez vous dans le dossier racine du projet et utilisez la commande :
 
     $ flake8
 
