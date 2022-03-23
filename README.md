@@ -54,7 +54,7 @@ Le site sera ensuite disponible à l'adresse suivante : http://localhost:8000/
 
 ## Lancer les tests et linting
 
-Pour générer un rapport Flake8 dans le terminal, placez vous dans le dossier racine du projet, et utilisez la commande :
+Pour générer un rapport Flake8 dans le terminal, placez vous dans le dossier racine du projet et utilisez la commande :
 
     $ flake8
 
@@ -65,11 +65,13 @@ Pour lancer les tests unitaires, placez vous dans le dossier racine du projet et
     $ pytest
 
 Les paramètres de pytest sont précisés dans le fichier `setup.cfg`
+
 Les paramètres de couverture de tests sont précisés dans le fichier `.coveragerc`
 
 # Déploiement
 
 Pour le déploiement de cette application, nous allons mettre en place un pipeline de développement et intégration continus via CircleCi
+
 Ce pipeline permettra, à chaque mise à jour, de :
 - Mettre à jour automatiquement le projet à chaque push sur GitHub
 - Analyser le projet an automatisant les tests unitaires et de linting
@@ -87,6 +89,7 @@ Pour mettre en place ce pipeline, vous devez disposer de compte sur les applicat
 ## CircleCi
 
 Pour lier le projet à CircleCi, vous devez avoir préalablement lié votre compte GitHub à votre compte CircleCi lors de sa création
+
 Ensuite, allez dans l'onglet `Projects` de CircleCi et cliquez sur `Set Up Project` correspondant au repository de votre choix
 
 En cas de difficultés, suivez les indications données sur https://circleci.com/docs/2.0/getting-started/
@@ -94,6 +97,7 @@ En cas de difficultés, suivez les indications données sur https://circleci.com
 ### Variables d'environnement
 
 Depuis le `Dashboard` de CircleCi, accédez aux `Project Settings` de votre project puis à l'onglet `Environment Variables`
+
 Sur cette page, vous devez ajouter les variables suivantes :
 
 |   Nom des Variable à ajouter  |   Obtention   |
@@ -105,6 +109,7 @@ Sur cette page, vous devez ajouter les variables suivantes :
 |   SENTRY_TOKEN   |   https://sentry.io/settings/ -> `Projects` -> Sélectionnez le projet correspondant -> `Client Keys (DSN)`   |
 
 Une fois le pipeline mis en place, chaque push GitHub lancera le job `build_test`
+
 Seuls les push sur la brance `main` lanceront les jobs `deploy_docker` et ensuite `deploy_heroku`
 
 Vous pourrez une fois les jobs validés, accéder à l'application sur https://oc-lettings2022.herokuapp.com/
