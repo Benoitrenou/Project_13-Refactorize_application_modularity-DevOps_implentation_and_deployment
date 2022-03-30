@@ -113,6 +113,3 @@ Une fois le pipeline mis en place, chaque push GitHub lancera le job `build_test
 Seuls les push sur la brance `main` lanceront les jobs `deploy_docker` et ensuite `deploy_heroku`
 
 Vous pourrez une fois les jobs validés, accéder à l'application sur https://oc-lettings2022.herokuapp.com/
-
-
-Test Heroku 
